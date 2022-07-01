@@ -1,0 +1,199 @@
+#include <iostream>
+#include<conio.h>
+
+using namespace std;
+
+
+int main() {
+
+int instance[5],count,sequence[10],safe,s=0,j,completed,i;
+int availabe[5],allocation[10][5],max[10][5];
+int need[10][5],process,p[10],countofr,countofp,running[10];
+cout<<Enter the number of resources;
+cin>>countofr;
+
+
+for(int i=0;i<=countofr;i++)
+{
+    cout<<"Enter the maximum instance of resource";
+    cin>>instance[i];
+    available[i]=instance[i];
+}
+
+cout<<"Enter the number of processes";
+cin>>countofp;
+cout<<Enter the allocation matrix;
+
+for(i=0;i<countofp;i++)
+{
+    cout<<"FOR THE PROCESS P"<<i<<"]"<<endl;
+    for(int j=0;j<countfr;j++)
+    {
+        cout<<allocation of the resources<<j<<']';
+        cin>>allocation[i][j];
+        available[j]=allocation[i][j];
+    }
+}
+cout<<"Enter the MAX matrix";
+
+for(i=0;i<countofy;i++)
+{
+    for(int j=0;j<countofr;j++)
+    {
+    cout<<"FOR THE PROCESS P[<<j<<"]";
+    cin>>max[i][j];
+    }
+}
+
+cout<<"the given data are";
+cout<<endl<<'Total resources in system";
+for(i=0;i<countofr;i++)
+{
+    cout<<i;
+    
+}
+cout<<endl;
+for(i=0;i<countofr;i++)
+{
+    cout<<"  "<<instance[i];
+    
+}
+cout<<Allocation matrix;
+for(j=0;j<countofr;j++)
+{
+    cout<<j;
+}
+cout<<endl;
+
+for(i=0;i<countofp;i++)
+{
+    cout<<i;
+    for(j=0;j<countofr;j++)
+    
+    {
+        cout<<" "<<allocation[i][j];
+        cout<<endl;
+    }
+    
+    cout<<"Max matrix";
+    for(j=0;j<countofr;j++)
+    {
+        cout<<j;
+        
+    }
+    cout<<endl;
+    
+    for(i=0;i<countofr;i++)
+    {
+        cout<<i;
+        for(j=0;j<countofr;j++)
+        {
+            cout<<"  "<<max[i][j];
+            cout<<endl;
+        }
+    }
+    
+    for(i=0;i<countofp;i++)
+    {
+        for(j=0;j<countofr;j++)
+        {
+            need[i][j]=max[i][j]-allocation[i][j];
+            
+        }
+    }
+    
+    cout<<"NEED matrix";
+    for(j=0j<countofr;j++)
+    {
+        count<<j;
+        count<<endl;
+    }
+    for(i=0;i<countofp;i++)
+    {
+        cout<<i;
+        for(j=0;j<countofr;j++)
+        {
+            cout<<" "<<need[i][j];
+            
+        }
+        cout<<endl;
+    }
+    
+    cout<<" NOW TO CHECK WHETHER ABOVE STATE IS SAFE";
+    cout<<"SEQUENCXE IN WHICH ABOVE REQUEST CAN BE FULLFILLED";
+    cout<<"PRESS ANY KEY TO CONTINUE";
+    getch();
+    
+    count=countofy;
+    
+    for(i=0;i<countofp;i++)
+    {
+        running[i]=1;
+    }
+    while(count)
+    {
+        safe=0;
+        for(i=0;i<countofy;i++)
+        {
+        if(running[i])
+        {
+            completed=1;
+            for(j=0;j<countofr;j++)
+            {
+                if(need[i][j]>available[j])
+                {
+                    completed=0;
+                    break;
+                }
+            }
+            if(completed)
+            
+            {
+                renning[i]=0;
+                count--;
+                safe=1;
+                for(j=0;j<countofr;j++)
+                {
+                    available[j]+=allocation[i][j];
+                    
+                }
+                sequence[s++]=i;
+                cout<<"Running processes";
+                cout<<endl<<"Total resources mow available";
+                fo(i=0;i<countfr;i++)
+                {
+                    cout<<i;
+                    cout<<endl;
+                }
+                for(i=0;i<countfr;i++)
+                {
+                    cout<<" "<<available[i];
+                    break;
+                }
+            }
+        }
+      
+        }
+         if(safe)
+        {
+            break;
+        }
+    
+    }
+    if(safe)
+    {
+        cout<<"System in safe state";
+        cout<<"safe sequence is";
+        for(i=0;i<countofp;i++)
+        {
+            cout<<sequence[i];
+        }
+    }
+    
+    else
+    {
+        cout<<"System in unsafe state";
+    }
+    getch();
+}
+
