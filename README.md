@@ -1,5 +1,5 @@
 # OS-PROJECT
-<img align="right" alt="Coding" width="400" src="[[https://cdn.dribbble.com/users/1162077/screenshots/3848914/programmer.gif](https://i.pinimg.com/originals/d3/21/39/d32139e3536ce0e0c12762cc3da5c756.gif)](https://1.bp.blogspot.com/-NxVEo3KRt0A/WqQc7l4kNkI/AAAAAAAAAnM/jzRmBeXKqBAzWH0A9he3RjaLYcusb0jlwCLcBGAs/s1600/DEJ2yvfFu9ayLmhW3XCmzU58.gif)">
+<img align="right" alt="Coding" width="400" src="https://cdn.pixabay.com/animation/2023/01/24/10/52/10-52-12-184_512.gif">
 Introduction to Deadlock Avoidance Algorithm for an OS Project
 
 Deadlock is a critical issue that can occur in multitasking operating systems, where processes are unable to proceed because they are waiting for resources held by other processes, leading to a stalemate situation. In an OS project, the implementation of a Deadlock Avoidance Algorithm becomes crucial to ensure the efficient and reliable functioning of the system.
