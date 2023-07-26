@@ -1,4 +1,5 @@
 # OS-PROJECT
+<img align="right" alt="Coding" width="400" src="https://cdn.dribbble.com/users/1162077/screenshots/3848914/programmer.gif">
 Introduction to Deadlock Avoidance Algorithm for an OS Project
 
 Deadlock is a critical issue that can occur in multitasking operating systems, where processes are unable to proceed because they are waiting for resources held by other processes, leading to a stalemate situation. In an OS project, the implementation of a Deadlock Avoidance Algorithm becomes crucial to ensure the efficient and reliable functioning of the system.
@@ -12,3 +13,4 @@ The implementation of the Deadlock Avoidance Algorithm involves a meticulous ana
 For an OS project, integrating the Deadlock Avoidance Algorithm adds a layer of sophistication and reliability to the system. It instills confidence in users that their processes will run smoothly without encountering deadlocks, enhancing the overall user experience. Furthermore, a well-designed Deadlock Avoidance Algorithm contributes to better resource utilization, ensuring that the system operates efficiently without unnecessary resource contention.
 
 In conclusion, implementing a Deadlock Avoidance Algorithm in an OS project is crucial to ensure the smooth execution of processes and prevent the occurrence of deadlock situations. By proactively managing resource allocation and process execution, the algorithm enhances the stability and reliability of the operating system, making it an essential component of any OS project.
+
