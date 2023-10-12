@@ -1,235 +1,131 @@
-#include<stdio.h>
+// C++ Program to Print all possible safe sequences using banker's algorithm
+#include <iostream>
+#include <string.h>
+#include <vector>
+// total number of process
+#define P 4
+// total number of resources
+#define R 3
+
+// total safe-sequences
+int total = 0;
+
+using namespace std;
+
+// function to check if process
+// can be allocated or not
+bool is_available(int process_id, int allocated[][R],
+				int max[][R], int need[][R], int available[])
+{
+
+	bool flag = true;
+
+	// check if all the available resources
+	// are less greater than need of process
+	for (int i = 0; i < R; i++) {
+
+		if (need[process_id][i] > available[i])
+			flag = false;
+	}
+
+	return flag;
+}
+
+// Print all the safe-sequences
+void safe_sequence(bool marked[], int allocated[][R], int max[][R],
+				int need[][R], int available[], vector<int> safe)
+{
+
+	for (int i = 0; i < P; i++) {
+
+		// check if it is not marked
+		// already and can be allocated
+		if (!marked[i] && is_available(i, allocated, max, need, available)) {
+
+			// mark the process
+			marked[i] = true;
+
+			// increase the available
+			// by deallocating from process i
+			for (int j = 0; j < R; j++)
+				available[j] += allocated[i][j];
+
+			safe.push_back(i);
+			// find safe sequence by taking process i
+			safe_sequence(marked, allocated, max, need, available, safe);
+			safe.pop_back();
+
+			// unmark the process
+			marked[i] = false;
+
+			// decrease the available
+			for (int j = 0; j < R; j++)
+				available[j] -= allocated[i][j];
+		}
+	}
+
+	// if a safe-sequence is found, display it
+	if (safe.size() == P) {
+
+		total++;
+		for (int i = 0; i < P; i++) {
+
+			cout << "P" << safe[i] + 1;
+			if (i != (P - 1))
+				cout << "--> ";
+		}
+
+		cout << endl;
+	}
+}
+
+// Driver Code
 int main()
 {
-	int pro,res,i,j,a=0,k=0,b=0,n;
-	printf("Enter number of process ::");
-	scanf("%d",&pro);
-	printf("Enter number of resources ::");
-	scanf("%d",&res);
-	int max[pro][res],allocation[pro][res],available[res],need[pro][res],instance,finish[pro],request[pro][res];
-	for(i=0;i<pro;i++)
-	{
-		finish[i]=0;
+
+	// allocated matrix of size P*R
+	int allocated[P][R] = { { 0, 1, 0 },
+							{ 2, 0, 0 },
+							{ 3, 0, 2 },
+							{ 2, 1, 1 } };
+
+	// max matrix of size P*R
+	int max[P][R] = { { 7, 5, 3 },
+					{ 3, 2, 2 },
+					{ 9, 0, 2 },
+					{ 2, 2, 2 } };
+
+	// Initial total resources
+	int resources[R] = { 10, 5, 7 };
+
+	// available vector of size R
+	int available[R];
+
+	for (int i = 0; i < R; i++) {
+
+		int sum = 0;
+		for (int j = 0; j < P; j++)
+			sum += allocated[j][i];
+
+		available[i] = resources[i] - sum;
 	}
-	printf("Enter Maximum matrix ::\n");
-	for(i=0;i<pro;i++)
-	{
-		printf("P[%d]\t",i);
-		for(j=0;j<res;j++)
-		{
-			scanf("\n%d",&instance);
-			max[i][j]=instance;
-		}
-	}
-	
-	printf("Enter allocation matrix ::\n");
-	for(i=0;i<pro;i++)
-	{
-		printf("P[%d]\t",i);
-		for(j=0;j<res;j++)
-		{
-			scanf("\n%d",&instance);
-			allocation[i][j]=instance;
-		}
-	}
-	printf("Enter available matrix ::\n");
-	for(j=0;j<res;j++)
-	 {
-			scanf("\n%d",&instance);
-			available[j]=instance;
-	 } 
-	for(i=0;i<pro;i++)
-	{
-		
-		for(j=0;j<res;j++)
-		{
-			need[i][j]=max[i][j]-allocation[i][j];
-		}
-	}
-	printf("The need matrix is ::");
-	for(i=0;i<pro;i++)
-	{
-		printf("\nP[%d]\t",i);
-		for(j=0;j<res;j++)
-		{
-			printf("%d\t",need[i][j]);
-		
-		}
-	}
-	printf("\n\n");
-	printf("Enter 1 to check a normal safe sequence\n");
-	printf("Enter 2 to check the sequence when additional resources are requested by P[0]\n");
-	printf("Enter 3 to check the sequence when additional resources are requested by P[1]\n");
-	scanf("\n%d",&n);
-	
-	switch(n)
-	{
-	case 1:
-		
-		
-	printf("\n\n");
-	printf("The safe sequence for the above given procceses if additional instances are not requested ::\n");
-	printf("\n");
-	while(a!=pro)
-	{
-		for(i=0;i<pro;i++)
-		{
-			for(j=0;j<res;j++)
-		   {
-		   	 if(need[i][j]<=available[j])
-		   	 {
-		   	 
-		   	 	k++;
-		   	
-		   	 }
-	       }
-	       if(k==res && finish[i]==0)
-	       {
-	       	printf("P[%d]\t",i);
-	       	finish[i]=1;
-	       	for(j=0;j<res;j++)
-	       	{
-	       		available[j]=available[j]+allocation[i][j];
-	       	}
-	       	a++;
-	       }
-	        k=0;
-	    }
-		  	
-		
-	}
-	break;
-    //For P[0] requesting additional resources:
-	case 2:
-		
-		
-	printf("Enter additional request by P0 process\n");
-	printf("request[0] ::\t");
-	for(j=0;j<res;j++)
-	{
-		
-		scanf("%d",&instance);
-		request[0][j]=instance;
-	}
-	for(j=0;j<res;j++)
-	{
-		if(request[0][j]<=need[0][j])
-		{
-			if(request[0][j]<=available[j])
-			{
-				available[j]=available[j]-request[0][j];
-				allocation[0][j]=allocation[0][j]+request[0][j];
-				need[0][j]=need[0][j]-request[0][j];
-			}
-			else
-			{
-				printf("P[0] must wait because resources are not available\n");
-			}
-		}
-		else
-		{
-			printf("The process has exceeded the maximum claim\n");
-		}
-	}
-	printf("The sequence after additional request by P[0] is::::<<");
-	while(a!=pro)
-	{
-		b=a;
-		for(i=0;i<pro;i++)
-		{
-			for(j=0;j<res;j++)
-			{
-				if(need[i][j]<=available[j])
-				{
-					k++;
-				}
-			}
-			if(k==res && finish[i]==0)
-			{
-				printf("P[%d]",i);
-				finish[i]=1;
-				for(j=0;j<res;j++)
-				{
-					available[j]=available[j]+allocation[i][j];
-				}
-				a++;
-			}
-			k=0;
-		}
-		if(a==b)
-		{
-			printf("\tStop after this system is unsafe...there is a deadlock>>\n\n");
-			printf("So Reena''s operating system is unsafe if there is a additional request by P[0]\n");
-			break;
-		}
-	}
-	break;
-	
-	//For P[1] requesting additional resources
-	case 3:
-		printf("Enter additional request by P[1] processes\n");
-		printf("request[0] ::\t");
-	for(j=0;j<res;j++)
-	{
-		scanf("%d",&instance);
-		request[0][j]=instance;
-	}
-	for(j=0;j<res;j++)
-	{
-		if(request[0][j]<=need[1][j])
-		{
-			if(request[0][j]<=available[j])
-			{
-				available[j]=available[j]-request[0][j];
-				allocation[1][j]=allocation[1][j]+request[0][j];
-				need[1][j]=need[1][j]-request[0][j];
-			}
-			else
-			{
-				printf("P[0] must wait because resources are not available\n");
-			}
-		}
-		else
-		{
-			printf("The process has exceeded the maximum claim\n");
-		}
-	}
-	printf("The sequence after additional request by P[1] is::::");
-	while(a!=pro)
-	{
-		b=a;
-		for(i=0;i<pro;i++)
-		{
-			for(j=0;j<res;j++)
-			{
-				if(need[i][j]<=available[j])
-				{
-					k++;
-				}
-			}
-			if(k==res && finish[i]==0)
-			{
-				printf("P[%d]\t",i);
-				finish[i]=1;
-				for(j=0;j<res;j++)
-				{
-					available[j]=available[j]+allocation[i][j];
-				}
-				a++;
-			}
-			k=0;
-		}
-	
-		if(a==b)
-		{
-			printf("\tStop after this system is unsafe...there is a deadlock>>\n\n");
-			printf("So Reena's operating system is unsafe if there is a additional request by P[0]\n");
-			break;
-		}
-		
-	}
-	break;		 
-}
-	
+
+	// safe vector for displaying a safe-sequence
+	vector<int> safe;
+
+	// marked of size P for marking allocated process
+	bool marked[P];
+	memset(marked, false, sizeof(marked));
+
+	// need matrix of size P*R
+	int need[P][R];
+	for (int i = 0; i < P; i++)
+		for (int j = 0; j < R; j++)
+			need[i][j] = max[i][j] - allocated[i][j];
+
+	cout << "Safe sequences are:" << endl;
+	safe_sequence(marked, allocated, max, need, available, safe);
+
+	cout << "\nThere are total " << total << " safe-sequences" << endl;
 	return 0;
 }
