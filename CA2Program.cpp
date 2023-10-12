@@ -1,131 +1,80 @@
-// C++ Program to Print all possible safe sequences using banker's algorithm
+// Banker's Algorithm
 #include <iostream>
-#include <string.h>
-#include <vector>
-// total number of process
-#define P 4
-// total number of resources
-#define R 3
-
-// total safe-sequences
-int total = 0;
-
 using namespace std;
 
-// function to check if process
-// can be allocated or not
-bool is_available(int process_id, int allocated[][R],
-				int max[][R], int need[][R], int available[])
-{
-
-	bool flag = true;
-
-	// check if all the available resources
-	// are less greater than need of process
-	for (int i = 0; i < R; i++) {
-
-		if (need[process_id][i] > available[i])
-			flag = false;
-	}
-
-	return flag;
-}
-
-// Print all the safe-sequences
-void safe_sequence(bool marked[], int allocated[][R], int max[][R],
-				int need[][R], int available[], vector<int> safe)
-{
-
-	for (int i = 0; i < P; i++) {
-
-		// check if it is not marked
-		// already and can be allocated
-		if (!marked[i] && is_available(i, allocated, max, need, available)) {
-
-			// mark the process
-			marked[i] = true;
-
-			// increase the available
-			// by deallocating from process i
-			for (int j = 0; j < R; j++)
-				available[j] += allocated[i][j];
-
-			safe.push_back(i);
-			// find safe sequence by taking process i
-			safe_sequence(marked, allocated, max, need, available, safe);
-			safe.pop_back();
-
-			// unmark the process
-			marked[i] = false;
-
-			// decrease the available
-			for (int j = 0; j < R; j++)
-				available[j] -= allocated[i][j];
-		}
-	}
-
-	// if a safe-sequence is found, display it
-	if (safe.size() == P) {
-
-		total++;
-		for (int i = 0; i < P; i++) {
-
-			cout << "P" << safe[i] + 1;
-			if (i != (P - 1))
-				cout << "--> ";
-		}
-
-		cout << endl;
-	}
-}
-
-// Driver Code
 int main()
 {
+	// P0, P1, P2, P3, P4 are the Process names here
 
-	// allocated matrix of size P*R
-	int allocated[P][R] = { { 0, 1, 0 },
-							{ 2, 0, 0 },
-							{ 3, 0, 2 },
-							{ 2, 1, 1 } };
+int n, m, i, j, k;
+n = 5; // Number of processes
+m = 3; // Number of resources
+int alloc[5][3] = { { 0, 1, 0 }, // P0 // Allocation Matrix
+					{ 2, 0, 0 }, // P1
+					{ 3, 0, 2 }, // P2
+					{ 2, 1, 1 }, // P3
+					{ 0, 0, 2 } }; // P4
 
-	// max matrix of size P*R
-	int max[P][R] = { { 7, 5, 3 },
-					{ 3, 2, 2 },
-					{ 9, 0, 2 },
-					{ 2, 2, 2 } };
+int max[5][3] = { { 7, 5, 3 }, // P0 // MAX Matrix
+				{ 3, 2, 2 }, // P1
+				{ 9, 0, 2 }, // P2
+				{ 2, 2, 2 }, // P3
+				{ 4, 3, 3 } }; // P4
 
-	// Initial total resources
-	int resources[R] = { 10, 5, 7 };
+int avail[3] = { 3, 3, 2 }; // Available Resources
 
-	// available vector of size R
-	int available[R];
+int f[n], ans[n], ind = 0;
+for (k = 0; k < n; k++) {
+	f[k] = 0;
+}
+int need[n][m];
+for (i = 0; i < n; i++) {
+	for (j = 0; j < m; j++)
+	need[i][j] = max[i][j] - alloc[i][j];
+}
+int y = 0;
+for (k = 0; k < 5; k++) {
+	for (i = 0; i < n; i++) {
+	if (f[i] == 0) {
 
-	for (int i = 0; i < R; i++) {
+		int flag = 0;
+		for (j = 0; j < m; j++) {
+		if (need[i][j] > avail[j]){
+			flag = 1;
+			break;
+		}
+		}
 
-		int sum = 0;
-		for (int j = 0; j < P; j++)
-			sum += allocated[j][i];
-
-		available[i] = resources[i] - sum;
+		if (flag == 0) {
+		ans[ind++] = i;
+		for (y = 0; y < m; y++)
+			avail[y] += alloc[i][y];
+		f[i] = 1;
+		}
 	}
+	}
+}
 
-	// safe vector for displaying a safe-sequence
-	vector<int> safe;
+int flag = 1;
 
-	// marked of size P for marking allocated process
-	bool marked[P];
-	memset(marked, false, sizeof(marked));
+// To check if sequence is safe or not
+for(int i = 0;i<n;i++)
+{
+		if(f[i]==0)
+	{
+		flag = 0;
+		cout << "The given sequence is not safe";
+		break;
+	}
+}
 
-	// need matrix of size P*R
-	int need[P][R];
-	for (int i = 0; i < P; i++)
-		for (int j = 0; j < R; j++)
-			need[i][j] = max[i][j] - allocated[i][j];
+if(flag==1)
+{
+	cout << "Following is the SAFE Sequence" << endl;
+	for (i = 0; i < n - 1; i++)
+		cout << " P" << ans[i] << " ->";
+	cout << " P" << ans[n - 1] <<endl;
+}
 
-	cout << "Safe sequences are:" << endl;
-	safe_sequence(marked, allocated, max, need, available, safe);
-
-	cout << "\nThere are total " << total << " safe-sequences" << endl;
-	return 0;
+	return (0);
 }
