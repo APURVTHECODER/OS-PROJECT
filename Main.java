@@ -112,12 +112,12 @@ public class Main
 	int i, j, k; 
 	GfGBankers gfg = new GfGBankers();
 		
-	gfg.initializeValues(); 
+	Main.initializeValues(); 
 	//Calculate the Need Matrix 
-	gfg.calculateNeed();		 
+	Main.calculateNeed();		 
 			
 	// Check whether system is in safe state or not 
-	gfg.isSafe();	 
+	Main.isSafe();	 
 	}
 }
 
